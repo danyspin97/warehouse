@@ -1,0 +1,29 @@
+Package gcc {
+	name = "gcc"
+	homepage = "https://www.gnu.org/software/libc"
+	summary = "Standard Shared Libraries (from the GNU C Library)"
+	licenses = "GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.1-or-later"
+
+	Sources sources {
+		tarball = "https://ftp.gnu.org/pub/gnu/glibc/glibc-${version}.tar.xz"
+	}
+
+	Dependencies build {
+		audit = "*"
+		bison = "*"
+		fdupes = "*"
+		libcap = "*"
+		libselinux = "*"
+		makeinfo = "*"
+		python3 = "*"
+		systemtap = "*"
+		xz = "*"
+		perl = "*"
+	}
+	
+	Module configure {
+		default = [
+			"--prefix=/usr"
+		]
+	}
+}

@@ -1,0 +1,93 @@
+. /tmp/warehouse/config.oil
+
+hay define Package
+hay define Package/Sources
+hay define Package/Dependencies
+hay define Package/Module/Args
+hay define Package/Option/Dependencies
+
+. packages/$name/$name.hay
+
+proc run_defined_function_or_fallback(fun) {
+	try type src_$fun 2>&1 >/dev/null
+	if (_status === 0) {
+		src_$fun
+	} else {
+		default_src_$fun
+	}
+}
+
+proc _src_fecth {
+	cd $builddir
+}
+
+const url_pattern = / <dot*> '#' <dot+> /
+proc default_src_fetch {
+	const http_pattern = / 'http' 's'? '://' dot* /
+
+	echo @sources
+	for source in @sources {
+		echo $source
+		if ( source !~ http_pattern ) {
+			echo "non http sources are not supported"
+			exit 1
+		}
+		var url = ''
+		var file = ''
+		if ( source ~ url_pattern ) {
+			setvar url = _match(1)
+			setvar file = _match(2)
+		} else {
+			setvar url = source
+			setvar file = $(basename -- $source)
+		}
+        if ! test --file $basedir/files/$file {
+            wget -O $basedir/files/$file -- $url
+        }
+	}
+}
+
+proc default_src_unpack {
+	for source in @sources {
+		var file = ''
+		if ( source ~ url_pattern ) {
+			setvar file = _match(2)
+		} else {
+			setvar file = $(basename -- $source)
+		}
+		ouch decompress -- $basedir/files/$file
+	}
+}
+
+proc default_src_prepare {
+	cd $builddir/$name-$version
+	for p in @patches {
+		patch -p1 -i$basedir/files/$p
+	}
+}
+
+proc default_src_configure {
+	mkdir build
+	cd build
+	../configure --prefix=$prefix --bindir=$bindir --disable-multilib
+}
+
+proc default_src_build {
+	make -j$nproc
+}
+
+proc default_src_install {
+	make install
+}
+
+rm -rf $builddir
+mkdir -p $builddir
+cd $builddir
+for fun in fetch unpack prepare configure build install {
+	try type src_$fun 2>&1 >/dev/null
+	if (_status === 0) {
+		src_$fun
+	} else {
+		default_src_$fun
+	}
+}

@@ -1,0 +1,21 @@
+Package glibc-$version {
+	name = "glibc"
+	homepage = "https://www.gnu.org/software/libc"
+	summary = "Standard Shared Libraries (from the GNU C Library)"
+	licenses = "GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.1-or-later"
+	patches =[
+		'glibc-2.35-make-4.4-MAKEFLAGS.patch'
+	]
+
+	Sources sources {
+		tarball = "https://ftp.gnu.org/pub/gnu/glibc/glibc-${version}.tar.xz"
+	}
+
+    bdep bison (min=2.22, options=:| static dynamic |)
+	
+	Module configure {
+		default = [
+			"--prefix=/usr"
+		]
+	}
+}

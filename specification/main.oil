@@ -1,0 +1,14 @@
+hay define Package
+hay define Package/Sources
+hay define Package/Dependency
+hay define Package/Module/Args
+hay define Package/Option
+
+. specification/dependency.oil
+
+const name = $1
+const version = $2
+. packages/$1/$1.hay
+
+const result = _hay()
+json write (result)
