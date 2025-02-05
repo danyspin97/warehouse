@@ -1,7 +1,7 @@
 . /tmp/warehouse/config.oil
 
 hay define Package
-hay define Package/Sources
+hay define Package/Tarball
 hay define Package/Dependencies
 hay define Package/Module/Args
 hay define Package/Option/Dependencies

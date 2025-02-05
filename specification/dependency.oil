@@ -1,16 +1,26 @@
 hay define Package/Dependency
 
-proc bdep (name; ; min="", max="", options) {
+proc bdep (name; ; min=null, max=null, options=null) {
     shopt --set dynamic_scope {
         Dependency $name {
-            var dep_type = "build"
-            if ("$min" !== "") {
-                var minimum = "$min"
-            }
-            if ("$max" !== "") {
-                var maximum = "$max"
-            }
-            var options_needed = options
+            dep_type = "build"
+            #if (min is not null) {
+            #    minimum = "$min"
+            #}
+            #if (max is not null) {
+            #    maximum = "$max"
+            #}
+            #if (options is not null) {
+            #    options_needed = options
+            #}
+        }
+    }
+}
+
+proc dep (name; ; at_least=null) {
+    shopt --set dynamic_scope {
+        Dependency $name {
+            dep_type = "build+run"
         }
     }
 }

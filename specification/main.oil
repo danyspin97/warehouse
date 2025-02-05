@@ -1,14 +1,39 @@
 hay define Package
-hay define Package/Sources
-hay define Package/Dependency
+hay define Package/Tarball
 hay define Package/Module/Args
 hay define Package/Option
 
+const NAME = $1
+const VERSION = $2
+
+const OPTION_FILE = "./options"
+var all_options = fromJson($(cat $OPTION_FILE))
+var tmp_options = split(all_options[NAME])
+var options = {}
+for opt in (tmp_options) {
+    if (opt[0] === "-") {
+        setvar opt = opt.replace('-', '')
+        setvar options[opt] = false
+    } else {
+        setvar options[opt] = true
+    }
+}
+
+func option (name) {
+    if (name in options) {
+        return (options[name])
+    } else {
+        return (false)
+    }
+}
+
+proc opt (option_name, opt_when_true, opt_when_false; opts) {
+    append -- $[opt_when_true if option(option_name) else opt_when_false] (opts)
+}
+
 . specification/dependency.oil
 
-const name = $1
-const version = $2
-. packages/$1/$1.hay
+. packages/$NAME/$NAME.hay
 
 const result = _hay()
 json write (result)

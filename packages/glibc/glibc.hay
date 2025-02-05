@@ -7,11 +7,11 @@ Package glibc-$version {
 		'glibc-2.35-make-4.4-MAKEFLAGS.patch'
 	]
 
-	Sources sources {
-		tarball = "https://ftp.gnu.org/pub/gnu/glibc/glibc-${version}.tar.xz"
+	Tarball sources {
+		download = "https://ftp.gnu.org/pub/gnu/glibc/glibc-${version}.tar.xz"
 	}
 
-    bdep bison (min=2.22, options=:| static dynamic |)
+    #bdep bison (min=2.22, options=:| static dynamic |)
 	
 	Module configure {
 		default = [

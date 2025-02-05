@@ -1,0 +1,21 @@
+Package acl {
+    homepage = "https://savannah.nongnu.org/projects/acl"
+    summary = "Commands for Manipulating POSIX Access Control Lists"
+    licenses = "GPL-2.0-or-later"
+    version = "$VERSION"
+
+    Tarball sources {
+        url = "https://download.savannah.nongnu.org/releases/${NAME}/${NAME}-${VERSION}.tar.xz"
+    }
+
+    bdep gettext (at_least="0.19.8")
+    dep attrs (at_least="2.4")
+
+    Module configure {
+        default = [
+            "--enable-nls"
+        ]
+
+        opt static --disable-shared --enable-shared (default)
+    }
+}
