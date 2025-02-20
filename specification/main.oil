@@ -7,15 +7,17 @@ const NAME = $1
 const VERSION = $2
 
 const OPTION_FILE = "./options"
-var all_options = fromJson($(cat $OPTION_FILE))
-var tmp_options = split(all_options[NAME])
 var options = {}
-for opt in (tmp_options) {
-    if (opt[0] === "-") {
-        setvar opt = opt.replace('-', '')
-        setvar options[opt] = false
-    } else {
-        setvar options[opt] = true
+if test -f $OPTION_FILE {
+    var all_options = fromJson($(cat $OPTION_FILE))
+    var tmp_options = split(all_options[NAME])
+    for opt in (tmp_options) {
+        if (opt[0] === "-") {
+            setvar opt = opt.replace('-', '')
+            setvar options[opt] = false
+        } else {
+            setvar options[opt] = true
+        }
     }
 }
 
