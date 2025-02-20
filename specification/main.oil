@@ -3,14 +3,14 @@ hay define Package/Tarball
 hay define Package/Module/Args
 hay define Package/Option
 
-const NAME = $1
-const VERSION = $2
+const name = $1
+const version = $2
 
 const OPTION_FILE = "./options"
 var options = {}
 if test -f $OPTION_FILE {
     var all_options = fromJson($(cat $OPTION_FILE))
-    var tmp_options = split(all_options[NAME])
+    var tmp_options = split(all_options[name])
     for opt in (tmp_options) {
         if (opt[0] === "-") {
             setvar opt = opt.replace('-', '')
@@ -35,7 +35,7 @@ proc opt (option_name, opt_when_true, opt_when_false; opts) {
 
 . specification/dependency.oil
 
-. packages/$NAME/$NAME.hay
+. packages/$name/$name.hay
 
 const result = _hay()
 json write (result)

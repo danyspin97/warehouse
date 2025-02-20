@@ -1,18 +1,13 @@
 hay define Package/Dependency
 
-proc bdep (name; ; min=null, max=null, options=null) {
-    shopt --set dynamic_scope {
-        Dependency $name {
-            dep_type = "build"
-            #if (min is not null) {
-            #    minimum = "$min"
-            #}
-            #if (max is not null) {
-            #    maximum = "$max"
-            #}
-            #if (options is not null) {
-            #    options_needed = options
-            #}
+proc bdep (name; ; at_least=null; options=null) {
+    Dependency $name {
+        dep_type = "build"
+        if (at_least is not null) {
+            at_least = at_least
+        }
+        if (options is not null) {
+            options = options
         }
     }
 }
